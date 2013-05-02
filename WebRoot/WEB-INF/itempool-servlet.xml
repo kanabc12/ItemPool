@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+                        http://www.springframework.org/schema/mvc   
+                        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd   
+                        http://www.springframework.org/schema/context    
+                        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<!-- 由于web.xml中设置是：由SpringMVC拦截所有请求，于是在读取静态资源文件的时候就会受到影响（说白了就是读不到） -->
+	<!-- 经过下面的配置，该标签的作用就是：所有页面中引用"/css/**"的资源，都会从"/static_resources/styles/"里面进行查找 -->
+	<!-- 我们可以访问http://IP:8080/xxx/css/my.css和http://IP:8080/xxx/resources/styles/my.css对比出来-->
+	<mvc:resources mapping="/javascript/**" location="/static_resources/javascript/" />
+	<mvc:resources mapping="/css/**" location="/static_resources/css/" />
+	<mvc:resources mapping="/images/**" location="/static_resources/images/" />
+	<mvc:resources mapping="/themes/**" location="/static_resources/themes/" />
+	<!--①注册ConversionService -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean
+					class="cn.javass.commons.web.converter.StringToDateConverter">
+					<constructor-arg value="yyyy-MM-dd" />
+				</bean>
+			</list>
+		</property>
+		<!--property name="formatters">
+			<list>
+				<bean
+					class="cn.javass.chapter7.web.controller.support.formatter.PhoneNumberFormatAnnotationFormatterFactory" />
+			</list>
+		</property-->
+	</bean>
+	<!--②使用ConfigurableWebBindingInitializer注册conversionService -->
+	<bean id="webBindingInitializer"
+		class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+		<property name="conversionService" ref="conversionService" />
+		<property name="validator" ref="validator" />
+	</bean>
+	<!-- 以下validator ConversionService 在使用mvc:annotation-driven 会自动注册 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<!-- 如果不加默认到使用classpath下的ValidationMessages.properties -->
+		<property name="validationMessageSource" ref="messageSource"/>
+	</bean>
+	<!--Spring3.1开始的注解 HandlerMapping -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" >
+		<property name="interceptors">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor">
+					<constructor-arg ref="conversionService" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- ①：对web包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+	<context:component-scan base-package="org.hxy.web" />
+	<!--Spring3.1开始的注解 HandlerAdapter -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="webBindingInitializer" ref="webBindingInitializer" />
+		<!--线程安全的访问session -->
+		<property name="synchronizeOnSession" value="true" />
+		<property name="customArgumentResolvers">
+			<list>
+				<bean
+					class="cn.javass.commons.mvc.method.annotation.RequestJsonParamMethodArgumentResolver" />
+			</list>
+		</property>
+		<!-- 配置一下对json数据的转换 -->
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
+			</list>
+		</property>
+	</bean>
+	<!-- ViewResolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- 资源配置Bean -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages"></property>
+		<property name="fileEncodings" value="utf-8"/>
+		<property name="cacheSeconds" value="120"/>
+	</bean>	
+</beans>

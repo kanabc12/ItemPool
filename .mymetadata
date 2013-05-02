@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="ItemPool"
+  id="myeclipse.1362294121326"
+  context-root="/ItemPool"
+  j2ee-spec="6.0"
+  archive="ItemPool.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
