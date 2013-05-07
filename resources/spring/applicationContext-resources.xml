@@ -16,7 +16,7 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-               <!--  <value>classpath:resources.properties</value>MySQL数据库 -->
+               <value>classpath:resources-mssql.properties</value><!-- MSSQL数据库 -->
                 <value>classpath:resources-oracle.properties</value><!-- Oracle数据库 -->
             </list>
         </property>
@@ -24,16 +24,38 @@
     
     <bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
         <property name="targetDataSource">
-            <bean class="org.logicalcobwebs.proxool.ProxoolDataSource">
-                <property name="driver" value="${db.driver.class}" />
-                <property name="driverUrl" value="${db.url}" />
-                <property name="user" value="${db.username}" />
+            <bean class="org.apache.commons.dbcp.BasicDataSource">
+                <property name="driverClassName" value="${db.driver.class}" />
+                <property name="url" value="${db.url}" />
+                <property name="username" value="${db.username}" />
                 <property name="password" value="${db.password}" />
-                <property name="maximumConnectionCount" value="${proxool.maxConnCount}" />
-                <property name="minimumConnectionCount" value="${proxool.minConnCount}" />
-                <property name="statistics" value="${proxool.statistics}" />
-                <property name="simultaneousBuildThrottle" value="${proxool.simultaneousBuildThrottle}" />
-                <property name="trace" value="${proxool.trace}" />
+                <property name="maxActive" value="${proxool.maxConnCount}" />
+                <property name="maxWait" value="${proxool.minConnCount}" />
+       			<property name="poolPreparedStatements" value="true"/>  
+        		<property name="defaultAutoCommit" value="true"/>  
+        		<property name="removeAbandoned" value="true"/>  
+        		<property name="logAbandoned" value="true"/>  
+        		<property name="minEvictableIdleTimeMillis" value="10"/>  
+        		<property name="removeAbandonedTimeout" value="5"/>  
+            </bean>
+        </property>
+    </bean>
+    
+        <bean id="dataSourceMSSQL" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+        <property name="targetDataSource">
+            <bean class="org.apache.commons.dbcp.BasicDataSource">
+                <property name="driverClassName" value="${mssql.driver.class}" />
+                <property name="url" value="${mssql.url}" />
+                <property name="username" value="${mssql.username}" />
+                <property name="password" value="${mssql.password}" />
+                <property name="maxActive" value="${proxool.maxConnCount}" />
+                <property name="maxWait" value="${proxool.minConnCount}" />
+       			<property name="poolPreparedStatements" value="true"/>  
+        		<property name="defaultAutoCommit" value="true"/>  
+        		<property name="removeAbandoned" value="true"/>  
+        		<property name="logAbandoned" value="true"/>  
+        		<property name="minEvictableIdleTimeMillis" value="10"/>  
+        		<property name="removeAbandonedTimeout" value="5"/>  
             </bean>
         </property>
     </bean>
