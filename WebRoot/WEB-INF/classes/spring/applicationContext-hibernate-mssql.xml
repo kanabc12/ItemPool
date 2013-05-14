@@ -11,17 +11,7 @@
 		<property name="lobHandler" ref="lobHandler"/>
 		<property name="annotatedClasses">           <!-- 2、指定注解类 -->
 			<list>
-				<!-- value>org.hxy.model.Discipline</value>
-				<value>org.hxy.model.Question</value>
-				<value>org.hxy.model.QuestionXMLData01</value>
-				<value>org.hxy.model.QuestionXMLData02</value>
-				<value>org.hxy.model.QuestionXMLData03</value>
-				<value>org.hxy.model.QuestionXMLData04</value>
-				<value>org.hxy.model.QuestionXMLData05</value>
-				<value>org.hxy.model.QuestionXMLData06</value>
-				<value>org.hxy.model.QuestionXMLData07</value>
-				<value>org.hxy.model.QuestionXMLData08</value>
-				<value>org.hxy.model.QuestionXMLData09</value -->
+				<value>org.hxy.model.Article</value>
 			</list>
 		</property>
 
@@ -32,43 +22,14 @@
 				<prop key="hibernate.format_sql">${mssql.hibernate.format_sql}</prop>
 				<prop key="hibernate.hbm2ddl.auto">${mssql.hibernate.hbm2ddl.auto}</prop>
 				<prop key="javax.persistence.validation.mode">none</prop>
+				<prop key="jdbc.use_scrollable_resultset">false</prop>
 			</props>
 		</property>
 	</bean>
-
-	<!--bean id="nativeJdbcExtractor"
-		class="org.springframework.jdbc.support.nativejdbc.SimpleNativeJdbcExtractor" />
-	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler">
-		<property name="nativeJdbcExtractor">
-			<ref bean="nativeJdbcExtractor" />
-		</property>
+		<bean id="abstractDao1" abstract="true" init-method="init">
+		<property name="sessionFactory" ref="sessionFactoryMSSQL" />
 	</bean>
-	<bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"
-		lazy-init="true" />
-
-	< bean id="abstractDao" abstract="true" init-method="init">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="disciplineHibernateDao" class="org.hxy.dao.hibernate.DisciplineHibernateDao"
-		parent="abstractDao" />
-	<bean id="questionHibernateDao" class="org.hxy.dao.hibernate.QuestionHibernateDao"
-		parent="abstractDao" />
-	<bean id="questionXMLData01HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData01HibernateDao"
-		parent="abstractDao" />
-	<bean id="questionXMLData02HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData02HibernateDao"
-		parent="abstractDao" />	
-	<bean id="questionXMLData03HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData03HibernateDao"
-		parent="abstractDao" />	
-	<bean id="questionXMLData04HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData04HibernateDao"
-		parent="abstractDao" />	
-	<bean id="questionXMLData05HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData05HibernateDao"
-		parent="abstractDao" />	
-	<bean id="questionXMLData06HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData06HibernateDao"
-		parent="abstractDao" />	
-	<bean id="questionXMLData07HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData07HibernateDao"
-		parent="abstractDao" />	
-	<bean id="questionXMLData08HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData08HibernateDao"
-		parent="abstractDao" />	
-	<bean id="questionXMLData09HibernateDao" class="org.hxy.dao.hibernate.QuestionXMLData09HibernateDao"
-		parent="abstractDao" /-->											
+	<bean id="articleDao" class="org.hxy.dao.hibernate.ArticleHibernateDao"
+		parent="abstractDao1" />
+											
 </beans>

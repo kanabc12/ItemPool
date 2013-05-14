@@ -68,10 +68,12 @@
 	    	emptyText:'请选择-----',
             dataSource : comboxData
         });
-	    
 	});
 	function test(){
 		var text = $('#answer').val("");
+	}
+	function test1(){
+		var text = $('#answer1').val("");
 	}
 	function test2(){
 		var text = $('#know').val("");
@@ -109,6 +111,27 @@
                          }}]
 	        });
 	}
+	
+	function reserch1(){
+		var answerText = jQuery.trim($("#answer1").val());
+		if(answerText==""){
+			alert("请输入标题!");
+			$("#answer1").focus();
+			return false;
+		}
+	    $('#articleResult').omGrid({
+	    	limit:10,
+	    	width:'fit',
+	    	height:300,
+	    	dataSource : '${ctx}/article/getArticlesByTitle',
+	    	extraData:{
+	    		'title':answerText
+	    	},
+            colModel : [ {header : '主题', name : 'title', width : 300, align : 'left'}, 
+                         {header : '日期', name : 'postTime', align : 'left', width : 180}]
+	        });
+	}
+	
 	 function showRowdata(index, e){
      	var data = $("#reserchResult").omGrid("getData").rows[index];
      	var url = "questionData/addSearchNum?questionId="+data.id+"&discipline="+data.disciplineId+"&regTime="+data.regTime+"&date="+new Date();
@@ -200,7 +223,14 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<div align="right"><td bgcolor="#FF0000"><a href="javascript:void(0);" style="text-decoration: none; font-size: 24px; color: #F00;" onClick="login()">登陆</a></td>&nbsp;&nbsp; &nbsp;<td  bgcolor="#FF0000"><a href="javascript:void(0);" style="text-decoration: none; font-size: 24px; color: #F00;" onClick="register()">注册</a></td></div>
+			<div align="right">
+				<td bgcolor="#FF0000"><a href="javascript:void(0);"
+					style="text-decoration: none; font-size: 24px; color: #F00;"
+					onClick="login()">登陆</a></td>&nbsp;&nbsp; &nbsp;
+				<td bgcolor="#FF0000"><a href="javascript:void(0);"
+					style="text-decoration: none; font-size: 24px; color: #F00;"
+					onClick="register()">注册</a></td>
+			</div>
 			<div id="logo"></div>
 			<div class="nav"></div>
 			<div class="guang">
@@ -215,7 +245,8 @@
 								<td>学科：</td>
 								<td><input id="combo1" name="combo1" /></td>
 								<td>知识点：</td>
-								<td><input type="text" id="know" value="输入知识点关键字" name="know" onFocus="test2()" />
+								<td><input type="text" id="know" value="输入知识点关键字"
+									name="know" onFocus="test2()" />
 								<td><input id="btn" type="button" value="搜索"
 									onclick="validate()" /></td>
 							</tr>
@@ -296,7 +327,8 @@
 														<c:out value="${question.knowledgeName}" />
 													</c:otherwise>
 												</c:choose>
-											</div></td>
+											</div>
+										</td>
 										<td><div align="left" class="innerCol "
 												style="width:170px">
 												<c:choose>
@@ -307,11 +339,9 @@
 														<c:out value="${question.queSoruce}" />
 													</c:otherwise>
 												</c:choose>
-											</div>
-										</td>
+											</div></td>
 										<td><div class="innerCol" align="center"
-												style="width:45px">${question.searchNum}</div>
-										</td>
+												style="width:45px">${question.searchNum}</div></td>
 										<td><div class="innerCol" align="center"
 												style="width:30px">
 												<a style="text-decoration: none;" href="javascript:void(0)"
@@ -353,9 +383,29 @@
 			<div class="nav"></div>
 			<div id="logo1">
 				<a href="http://sj.jtywx.com/sj/cxh.aspx" target="_blank"><img
-					src="${ctx}/images/tmxsj.jpg" border="0" alt="中国教育部">
-				</a>
+					src="${ctx}/images/tmxsj.jpg" border="0" alt="中国教育部"> </a>
 			</div>
+			<div class="nav"></div>
+						<div class="guang">
+				<div class="tit">
+					<h3>根据标题找文章</h3>
+				</div>
+				<div id="answerDiv">
+					<div id="leftMargin"></div>
+					<div id="answerSerach">
+						<table>
+							<tr>
+								<td>标题：</td>
+								<td><input type="text" id="answer1" name="answer"
+									value="输入标题" onFocus="test1()" /></td>
+								<td><input id="btn" type="button" value="搜索"
+									onclick="reserch1()" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<table id="articleResult"></table>
 			<div class="nav"></div>
 			<div id="tabs">
 				<div class="tit">
@@ -373,20 +423,15 @@
 		</div>
 		<div class="nav"></div>
 		<div id="logo2">
-	<img
-					src="${ctx}/images/zsj.jpg" border="0" alt="中国教育部">
-				<a href="http://sj.jtywx.com/sj/cxh.aspx" target="_blank">
-					<img src="${ctx}/images/tmxsj.jpg" border="0">	</a>
+			<img src="${ctx}/images/zsj.jpg" border="0" alt="中国教育部"> <a
+				href="http://sj.jtywx.com/sj/cxh.aspx" target="_blank"> <img
+				src="${ctx}/images/tmxsj.jpg" border="0">
+			</a>
 		</div>
-
-
-
 		<div class="nav"></div>
 		<div id="logo1">
 			<img src="${ctx}/images/czbf.jpg" border="0">
 		</div>
-
-
 	</div>
 </body>
 </html>
