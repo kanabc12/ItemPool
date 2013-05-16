@@ -13,6 +13,7 @@
 			<list>
 				<value>org.hxy.model.Discipline</value>
 				<value>org.hxy.model.Question</value>
+				<value>org.hxy.model.User</value>
 				<value>org.hxy.model.QuestionXMLData01</value>
 				<value>org.hxy.model.QuestionXMLData02</value>
 				<value>org.hxy.model.QuestionXMLData03</value>

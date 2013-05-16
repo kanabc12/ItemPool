@@ -219,18 +219,35 @@
 	
 	</script>
 </head>
-
 <body>
+	<div class="top">
+		<div class="top_1">
+		<div class="top_left">
+			<ul class="ul_1">
+				<li class="sp"><a href="javascript:void(0);"
+					onClick="this.style.behavior='url(#default#homepage)';this.setHomePage('http://localhost:8080/ItemPool/index.html');">设为主页</a>
+				</li>
+				<li><a
+					href="#>网站导航</a>
+					</li>
+					<li><a href="#">联系我们</a>
+					</li>
+					<li><a href="#">手机版</a></li>
+					<li><a href="#">IPD版</a></li>
+				</ul>
+			</div>
+			<div class="top_right">
+				<ul class="ul_2">
+					<li class="txt">用户名：<input type="text" size="10" id="username" /></li>
+					<li class="txt">密码：<input type="password" size="10" id="pwd" /></li>
+					<li class="btn"><a href="#">登陆</a></li>
+					<li class="btn"><a href="#">注册</a></li>
+				</ul>
+			</div>
+			</div>
+	</div>
 	<div id="container">
 		<div id="header">
-			<div align="right">
-				<td bgcolor="#FF0000"><a href="javascript:void(0);"
-					style="text-decoration: none; font-size: 24px; color: #F00;"
-					onClick="login()">登陆</a></td>&nbsp;&nbsp; &nbsp;
-				<td bgcolor="#FF0000"><a href="javascript:void(0);"
-					style="text-decoration: none; font-size: 24px; color: #F00;"
-					onClick="register()">注册</a></td>
-			</div>
 			<div id="logo"></div>
 			<div class="nav"></div>
 			<div class="guang">
