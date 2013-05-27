@@ -1,3 +1,10 @@
+/ValidationMessages.properties
 /cn
+/log4j.xml
+/messages.properties
+/messages_zh_CN.properties
 /org
+/resources-mssql.properties
+/resources-oracle.properties
+/resources.properties
 /spring

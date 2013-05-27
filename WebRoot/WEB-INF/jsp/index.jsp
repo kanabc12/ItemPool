@@ -42,7 +42,53 @@
 			comboxData[i] = obj;
 		}
 	}
-	
+	var xk = [{text:'语文',value:11},
+              {text:'数学',value:10},
+              {text:'英语',value:9},
+              {text:'物理',value:8},
+              {text:'化学',value:7},
+              {text:'生物',value:6},
+              {text:'政治',value:5},
+              {text:'历史',value:4},
+              {text:'地理',value:3},
+              {text:'文综',value:2},
+              {text:'理综',value:1}];
+	var dq = [
+	             {text:'北京',value:1},
+	              {text:'天津',value:2},
+	              {text:'河北',value:3},
+	              {text:'山西',value:4},
+	              {text:'内蒙古',value:5},
+	              {text:'辽宁',value:6},
+	              {text:'吉林',value:7},
+	              {text:'黑龙江',value:8},
+	              {text:'上海',value:9},
+	              {text:'江苏',value:10},
+	              {text:'浙江',value:11},
+	              {text:'安徽',value:12},
+	              {text:'福建',value:13},
+	              {text:'江西',value:14},
+	              {text:'山东',value:15},
+	              {text:'河南',value:16},
+	              {text:'湖北',value:17},
+	              {text:'湖南',value:18},
+	              {text:'广东',value:19},
+	              {text:'广西',value:20},
+	              {text:'海南',value:21},
+	              {text:'重庆',value:22},
+	              {text:'四川',value:23},
+	              {text:'贵州',value:24},
+	              {text:'云南',value:25},
+	              {text:'西藏',value:26},
+	              {text:'陕西',value:27},  
+	              {text:'甘肃',value:28}, 
+	              {text:'青海',value:29}, 
+	              {text:'宁夏',value:30}, 
+	              {text:'新疆',value:31}, 
+	              {text:'香港',value:32}, 
+	              {text:'澳门',value:33}, 
+	              {text:'台湾',value:34}, 
+	              {text:'全国',value:35}];
 	$(document).ready(function() {
 		formComboxData(discipline);
 	    $('#slider').omSlider({
@@ -67,6 +113,16 @@
 	    	value:'',
 	    	emptyText:'请选择-----',
             dataSource : comboxData
+        });
+	    $('#combo3').omCombo({
+	    	value:'',
+	    	emptyText:'请选择-----',
+            dataSource : xk
+        });
+	    $('#combo4').omCombo({
+	    	value:'',
+	    	emptyText:'请选择-----',
+            dataSource : dq
         });
 	});
 	function test(){
@@ -114,6 +170,8 @@
 	
 	function reserch1(){
 		var answerText = jQuery.trim($("#answer1").val());
+		var xkValue = $("#combo3").val();
+		var dqValue = $("#combo4").val();
 		if(answerText==""){
 			alert("请输入标题!");
 			$("#answer1").focus();
@@ -125,10 +183,16 @@
 	    	height:300,
 	    	dataSource : '${ctx}/article/getArticlesByTitle',
 	    	extraData:{
-	    		'title':answerText
+	    		'title':answerText,
+	    		'xk':xkValue,
+	    		'dq':dqValue
 	    	},
             colModel : [ {header : '主题', name : 'title', width : 300, align : 'left'}, 
-                         {header : '日期', name : 'postTime', align : 'left', width : 180}]
+                         		{header : '日期', name : 'postTime', align : 'left', width : 180}
+                         ],
+            onRowClick:function(rowIndex,rowData,event){
+                        window.open("http://localhost:8080/?id="+rowData.id+);     
+             }             
 	        });
 	}
 	
@@ -192,8 +256,7 @@
 		   	}
 	     }
 	 function showPage(questionId,disciplineId,regTime){
-		var url = "questionData/showData?questionId="+questionId+"&discipline="+disciplineId+"&regTime="+regTime+"&date="+new Date();;
-		//var url = "questionData/showData?questionId=2790958&discipline=21&regTime=2012-8-9&date="+new Date();
+		var url = "questionData/showData?questionId="+questionId+"&discipline="+disciplineId+"&regTime="+regTime+"&date="+new Date();
 		showModalDialog(url,window,'dialogwidth:600px;dialogheight:400px;help:0;center:yes;resizable:0;status:0;scroll:yes');
 	}
 	
@@ -233,7 +296,7 @@
 					<li><a href="#">联系我们</a>
 					</li>
 					<li><a href="#">手机版</a></li>
-					<li><a href="#">IPD版</a></li>
+					<li><a href="#">IPAD版</a></li>
 				</ul>
 			</div>
 			<div class="top_right">
@@ -412,6 +475,10 @@
 					<div id="answerSerach">
 						<table>
 							<tr>
+								<td>地区：</td>
+								<td><input id="combo4" name="dq" /></td>
+								<td>学科：</td>
+								<td><input id="combo3" name="xk" /></td>
 								<td>标题：</td>
 								<td><input type="text" id="answer1" name="answer"
 									value="输入标题" onFocus="test1()" /></td>

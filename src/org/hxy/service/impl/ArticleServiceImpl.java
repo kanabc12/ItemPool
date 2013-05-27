@@ -81,4 +81,11 @@ public class ArticleServiceImpl implements IArticleService {
 		return articleDao.getArticlesByTitle(title, pn, pageSize);
 	}
 
+	@Override
+	public List<Article> getArticles(String title, int pn, int pageSize,
+			int proviceId, int subjectId) {
+		// TODO Auto-generated method stub
+		return articleDao.getArticles(title, pn, pageSize, proviceId, subjectId);
+	}
+
 }

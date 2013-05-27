@@ -5,6 +5,9 @@
 	text-align: center;
 	background-color: #D3E7C9;
 }
+.top .ul_1,.ul_2 li a{
+	background:url(../images/bg.gif) no-repeat;
+}
 .top {
 	width: 100%;
 	height: 31px;

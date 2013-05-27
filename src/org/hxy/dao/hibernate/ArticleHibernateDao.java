@@ -77,4 +77,16 @@ public class ArticleHibernateDao extends BaseHibernateDao<Article, Integer> impl
 		return result;
 	}
 
+	@Override
+	public List<Article> getArticles(String title, int pn, int pageSize,
+			int proviceId, int subjectId) {
+		String hql = "from Article where title  like ? and proviceId = ? and subjectId = ?";
+		Object [] paramlist = new Object[3];
+		paramlist[0] = " '%"+title+"%'";
+		paramlist[1] = proviceId;
+		paramlist[2] = subjectId;
+		List<Article> result = list(hql,pn,pageSize,paramlist);
+		return result;
+	}
+
 }

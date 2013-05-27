@@ -13,7 +13,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import cn.javass.commons.mvc.util.JsonDateSerializer;
 
 @Entity
-@Table(name = "T_Article")
+@Table(name = "tbl_ShijuanArticle")
 public class Article  implements Serializable{
 	/**
 	 * 主键
@@ -26,6 +26,22 @@ public class Article  implements Serializable{
 	@Column(name = "PostTime")
 	@JsonSerialize(using=JsonDateSerializer.class)
 	private Timestamp postTime;
+	@Column(name="ProvinceID")
+	private Integer proviceId;
+	@Column(name="SubjectID")
+	private Integer subjectId;
+	public Integer getProviceId() {
+		return proviceId;
+	}
+	public void setProviceId(Integer proviceId) {
+		this.proviceId = proviceId;
+	}
+	public Integer getSubjectId() {
+		return subjectId;
+	}
+	public void setSubjectId(Integer subjectId) {
+		this.subjectId = subjectId;
+	}
 	public Integer getId() {
 		return id;
 	}
