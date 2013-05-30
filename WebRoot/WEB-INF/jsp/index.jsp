@@ -54,6 +54,7 @@
               {text:'文综',value:2},
               {text:'理综',value:1}];
 	var dq = [
+				{text:'全国',value:35},	
 	             {text:'北京',value:1},
 	              {text:'天津',value:2},
 	              {text:'河北',value:3},
@@ -87,8 +88,7 @@
 	              {text:'新疆',value:31}, 
 	              {text:'香港',value:32}, 
 	              {text:'澳门',value:33}, 
-	              {text:'台湾',value:34}, 
-	              {text:'全国',value:35}];
+	              {text:'台湾',value:34}];
 	$(document).ready(function() {
 		formComboxData(discipline);
 	    $('#slider').omSlider({
@@ -170,8 +170,8 @@
 	
 	function reserch1(){
 		var answerText = jQuery.trim($("#answer1").val());
-		var xkValue = $("#combo3").val();
-		var dqValue = $("#combo4").val();
+		var xkValue = $("#combo3").val()==""?0:$("#combo3").val();
+		var dqValue = $("#combo4").val()==""?0:$("#combo4").val();
 		if(answerText==""){
 			alert("请输入标题!");
 			$("#answer1").focus();
@@ -187,11 +187,23 @@
 	    		'xk':xkValue,
 	    		'dq':dqValue
 	    	},
-            colModel : [ {header : '主题', name : 'title', width : 300, align : 'left'}, 
-                         		{header : '日期', name : 'postTime', align : 'left', width : 180}
+            colModel : [ {header : '主题', name : 'title', width : 740, align : 'left',renderer:function(colValue, rowData, rowIndex){
+            	if(rowData.postTime!=""){
+            		var n1 = new Date().getTime();
+            		var n2 = new Date(rowData.postTime).getTime();
+            		if(((n1-n2)/(24*60*60*1000))<=10){
+                		return colValue + '<img src="${ctx}/images/new.gif" />';
+            		}else{
+            			return colValue;
+            		}
+            	}else{
+            		return colValue;
+            	}
+            }}, 
+                         		{header : '日期', name : 'postTime', align : 'center', width : 150}
                          ],
             onRowClick:function(rowIndex,rowData,event){
-                        window.open("http://localhost:8080/?id="+rowData.id+);     
+                        window.open("http://localhost:8080/?id="+rowData.id);     
              }             
 	        });
 	}

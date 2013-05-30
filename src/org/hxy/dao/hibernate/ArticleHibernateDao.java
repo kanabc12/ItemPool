@@ -80,12 +80,21 @@ public class ArticleHibernateDao extends BaseHibernateDao<Article, Integer> impl
 	@Override
 	public List<Article> getArticles(String title, int pn, int pageSize,
 			int proviceId, int subjectId) {
-		String hql = "from Article where title  like ? and proviceId = ? and subjectId = ?";
-		Object [] paramlist = new Object[3];
-		paramlist[0] = " '%"+title+"%'";
-		paramlist[1] = proviceId;
-		paramlist[2] = subjectId;
-		List<Article> result = list(hql,pn,pageSize,paramlist);
+		List<Article> result = null;
+		StringBuffer sb = new StringBuffer();
+		sb.append("from Article where title  like ? ");
+		if(proviceId==0&&subjectId==0){
+			result = list(sb.toString(),pn,pageSize,new Object[] { "%" + title + "%" } );
+		}else if(proviceId==0&&subjectId!=0){
+			sb.append(" and subjectId=? ");
+			result = list(sb.toString(),pn,pageSize,new Object[] { "%" + title + "%",new Integer(subjectId) } );
+		} else if(proviceId!=0&& subjectId==0){
+			sb.append(" and proviceId=? ");
+			result = list(sb.toString(),pn,pageSize,new Object[] { "%" + title + "%",new Integer(proviceId) } );
+		}else{
+			sb.append(" and proviceId=? and subjectId=?");
+			result = list(sb.toString(),pn,pageSize,new Object[] { "%" + title + "%",new Integer(proviceId),new Integer(subjectId) } );
+		}
 		return result;
 	}
 
