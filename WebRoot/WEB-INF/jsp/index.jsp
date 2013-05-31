@@ -172,11 +172,11 @@
 		var answerText = jQuery.trim($("#answer1").val());
 		var xkValue = $("#combo3").val()==""?0:$("#combo3").val();
 		var dqValue = $("#combo4").val()==""?0:$("#combo4").val();
-		if(answerText==""){
+		/*if(answerText==""){
 			alert("请输入标题!");
 			$("#answer1").focus();
 			return false;
-		}
+		}*/
 	    $('#articleResult').omGrid({
 	    	limit:10,
 	    	width:'fit',
@@ -187,20 +187,20 @@
 	    		'xk':xkValue,
 	    		'dq':dqValue
 	    	},
-            colModel : [ {header : '主题', name : 'title', width : 740, align : 'left',renderer:function(colValue, rowData, rowIndex){
+            colModel : [ {header : '主题', name : 'title', width : 780, align : 'left',renderer:function(colValue, rowData, rowIndex){
             	if(rowData.postTime!=""){
             		var n1 = new Date().getTime();
             		var n2 = new Date(rowData.postTime).getTime();
             		if(((n1-n2)/(24*60*60*1000))<=10){
-                		return colValue + '<img src="${ctx}/images/new.gif" />';
+                		return '<span style="cursor:pointer">'+colValue + '</span><img src="${ctx}/images/new.gif" />';
             		}else{
-            			return colValue;
+            			return  '<span style="cursor:pointer">'+colValue+ '</span>';
             		}
             	}else{
-            		return colValue;
+            		return '<span style="cursor:pointer">'+colValue+ '</span>';
             	}
             }}, 
-                         		{header : '日期', name : 'postTime', align : 'center', width : 150}
+                         		{header : '日期', name : 'postTime', align : 'center', width : 100}
                          ],
             onRowClick:function(rowIndex,rowData,event){
                         window.open("http://localhost:8080/?id="+rowData.id);     
@@ -493,7 +493,7 @@
 								<td><input id="combo3" name="xk" /></td>
 								<td>标题：</td>
 								<td><input type="text" id="answer1" name="answer"
-									value="输入标题" onFocus="test1()" /></td>
+									value="" onFocus="test1()" /></td>
 								<td><input id="btn" type="button" value="搜索"
 									onclick="reserch1()" /></td>
 							</tr>

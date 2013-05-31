@@ -1,5 +1,6 @@
 package org.hxy.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hxy.dao.IArticleDao;
@@ -81,20 +82,22 @@ public class ArticleHibernateDao extends BaseHibernateDao<Article, Integer> impl
 	public List<Article> getArticles(String title, int pn, int pageSize,
 			int proviceId, int subjectId) {
 		List<Article> result = null;
+		List<Object> paramlist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer();
-		sb.append("from Article where title  like ? ");
-		if(proviceId==0&&subjectId==0){
-			result = list(sb.toString(),pn,pageSize,new Object[] { "%" + title + "%" } );
-		}else if(proviceId==0&&subjectId!=0){
-			sb.append(" and subjectId=? ");
-			result = list(sb.toString(),pn,pageSize,new Object[] { "%" + title + "%",new Integer(subjectId) } );
-		} else if(proviceId!=0&& subjectId==0){
-			sb.append(" and proviceId=? ");
-			result = list(sb.toString(),pn,pageSize,new Object[] { "%" + title + "%",new Integer(proviceId) } );
-		}else{
-			sb.append(" and proviceId=? and subjectId=?");
-			result = list(sb.toString(),pn,pageSize,new Object[] { "%" + title + "%",new Integer(proviceId),new Integer(subjectId) } );
+		sb.append("from Article where 1=1 ");
+		if(!"".equals(title)&&title!=null){
+			sb.append(" and title like ?");
+			paramlist.add("%" + title + "%" );
 		}
+		if(proviceId!=0){
+			sb.append(" and proviceId=?");
+			paramlist.add(new Integer(proviceId));
+		}
+		if(subjectId!=0){
+			sb.append(" and subjectId=?");
+			paramlist.add(new Integer(subjectId));
+		}
+		result = list(sb.toString(),pn,pageSize,paramlist.toArray());
 		return result;
 	}
 
