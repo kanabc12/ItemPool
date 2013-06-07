@@ -129,5 +129,11 @@ public class QuestionServiceImpl implements IQuestionService {
 		return result;
 	}
 
+	@Override
+	public List<QuestionMini> queryCurrentQuestion(String regTime) {
+		// TODO Auto-generated method stub
+		return questionHibernateDao.queryCurrentQuestion(regTime);
+	}
+
 	
 }

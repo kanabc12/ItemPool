@@ -60,4 +60,11 @@ public class QuestionHibernateDao  extends BaseHibernateDao<Question, Integer> i
 		return results;
 	}
 
+	@Override
+	public List<QuestionMini> queryCurrentQuestion(String regTime) {
+		String hql =  "select new org.hxy.model.QuestionMini(id,disciplineId,regTime) from org.hxy.model.Question where to_char(regTime,'yyyy-MM-dd')=?";
+		List<QuestionMini> results = list(hql, -1, -1, new String[]{regTime});
+		return results;
+	}
+
 }

@@ -38,4 +38,11 @@ public interface IQuestionService extends IBaseService<Question,Integer> {
 	 * @return
 	 */
 	public List<QuestionMini> queryMostHotSearch(int size);
+	
+	/**
+	 * 查询当天新增的试题
+	 * @param regTime
+	 * @return
+	 */
+	public List<QuestionMini> queryCurrentQuestion(String regTime);
 }

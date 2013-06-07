@@ -134,4 +134,78 @@ public class QuestionCopy {
 
 		return success;
 	}
+	
+	public static boolean genQuestionDocAndHtml(QuestionXMLData question,String disciplineCode,String regTime){
+		boolean success = true;//生成html页面成功
+		String templateFile  =FileManager.getUrlRootPath()+"/templet/question/blank.xml"; // 模板文件
+		String root = FileManager.getUrlRootPath();
+		String rootPath = root.substring(0, root.length()-9);//去掉路径中etsClient
+		String docFolderPath = rootPath+"/etsdoc/"+disciplineCode+"/doc/"+regTime;
+		String htmlFolderPath = rootPath+"/etsdoc/"+disciplineCode+"/quehtml/"+regTime;
+		FileOperateUtils.createDirectory(htmlFolderPath);
+		FileOperateUtils.createDirectory(docFolderPath);
+		String bodyHtmlFile= htmlFolderPath+"/body"+question.getQuestionId()+".html";//需转换的html文档的保存路径
+		String answerHtmlFile= htmlFolderPath+"/answer"+question.getQuestionId()+".html";
+		String analysisHtmlFile= htmlFolderPath+"/analysis"+question.getQuestionId()+".html";
+		String bodyWordFile = docFolderPath+"/body"+question.getQuestionId()+".doc";//当前文档的保存路径
+		String answerWordFile = docFolderPath+"/answer"+question.getQuestionId()+".doc";
+		String analysisWordFile = docFolderPath+"/analysis"+question.getQuestionId()+".doc";
+		String queTempsource = WordMLUtil.readTextFile(templateFile, "utf-8");
+ 		String preQuePart = queTempsource.substring(0, queTempsource.indexOf("<w:p/>"));//获取可插入试题内容标记前部字符串
+		String aftQuePart = queTempsource.substring(queTempsource.indexOf("<w:p/>"));//获取可插入试题内容标记后部字符串
+		//生成试题题文html文件
+		StringBuffer queBodyBuf = new StringBuffer("");
+		String bodyXmlStr = question.getZquestionBody();
+		queBodyBuf.append(preQuePart);
+		queBodyBuf.append(bodyXmlStr);
+		queBodyBuf.append(aftQuePart);
+		WordMLUtil.writeStringToFile(bodyWordFile,queBodyBuf.toString(),"utf-8");//由试题xml数据生成试题doc文件
+		JacobHelper jacobHelper = new JacobHelper(false);
+		try{
+			jacobHelper.openDocument(bodyWordFile);//打开试题题文文件
+			jacobHelper.doc2html(bodyHtmlFile); //将当前文档转成html文件  
+		 	jacobHelper.closeDocument();//关闭当前文档
+		}catch(Exception e) {
+ 			jacobHelper.closeDocument();//关闭当前文档	
+ 			success = false;
+ 		}
+		//生成试题答案html文件
+		StringBuffer queAnswerBuf = new StringBuffer("");
+		String answerXmlStr = question.getZanswer();
+		queAnswerBuf.append(preQuePart);
+		queAnswerBuf.append(answerXmlStr);
+		queAnswerBuf.append(aftQuePart);
+		WordMLUtil.writeStringToFile(answerWordFile,queAnswerBuf.toString(),"utf-8");//由试题xml数据生成试题doc文件
+		try{
+			jacobHelper.openDocument(answerWordFile);//打开试题题文文件
+			jacobHelper.doc2html(answerHtmlFile);   		
+	     	jacobHelper.closeDocument();
+		}catch(Exception e) {
+ 			jacobHelper.closeDocument();//关闭当前文档	
+ 			success = false;
+ 		}
+		//生成试题解析html文件
+		if(null != question.getZanalysis()){
+			StringBuffer queAnalysisBuf = new StringBuffer("");
+			String analysisXmlStr = question.getZanalysis();
+			queAnalysisBuf.append(preQuePart);
+			queAnalysisBuf.append(analysisXmlStr);
+			queAnalysisBuf.append(aftQuePart);
+			WordMLUtil.writeStringToFile(analysisWordFile,queAnalysisBuf.toString(),"utf-8");//由试题xml数据生成试题doc文件
+			try{
+				jacobHelper.openDocument(analysisWordFile);//打开试题题文文件
+				jacobHelper.doc2html(analysisHtmlFile);
+				jacobHelper.closeDocument();
+			}catch(Exception e) {
+	 			jacobHelper.closeDocument();//关闭当前文档	
+	 			success = false;
+	 		}
+		}
+		jacobHelper.close();
+		//如果存在试题的doc文件，则删除
+		FileOperateUtils.delFile(bodyWordFile);
+		FileOperateUtils.delFile(answerWordFile);
+		FileOperateUtils.delFile(analysisWordFile);
+		return success;
+	}
 }

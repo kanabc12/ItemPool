@@ -76,6 +76,14 @@ public class QuestionMini implements Serializable {
 		this.topicName = topicName;
 		this.searchNum = searchNum;
 	}
+	
+	public QuestionMini(Integer id,Integer disciplineId, Date regTime ){
+		super();
+		this.id = id;
+		this.disciplineId = disciplineId;
+		this.regTime =  regTime;
+	}
+	
 
 	public Integer getId() {
 		return id;
