@@ -150,8 +150,8 @@ public class HtmlQuartzService {
 				}
 			}
 			if(questionData !=null && !"".equals(questionData.getZquestionBody())&& questionData.getZquestionBody()!=null){
-				QuestionCopy.genQuestionDocAndHtml(questionData, (disciplineId-19) + "",DateUtil.DateToString(currentDate, "yyyyMMdd"));
-				ACCESS_LOG.info("试卷"+questionData.getQuestionId()+"生成了");
+				QuestionCopy.genQuestionDocAndHtml(questionData, disciplineId + "",DateUtil.DateToString(currentDate, "yyyyMMdd"));
+				ACCESS_LOG.info("试卷"+questionData.getQuestionId()+"生成了,时间为"+System.currentTimeMillis());
 			}
 		}
 	}

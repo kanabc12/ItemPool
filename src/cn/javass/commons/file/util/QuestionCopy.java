@@ -206,6 +206,11 @@ public class QuestionCopy {
 		FileOperateUtils.delFile(bodyWordFile);
 		FileOperateUtils.delFile(answerWordFile);
 		FileOperateUtils.delFile(analysisWordFile);
+		try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace(); 
+        }
 		return success;
 	}
 }
