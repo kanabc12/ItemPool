@@ -30,6 +30,30 @@ public class Article  implements Serializable{
 	private Integer proviceId;
 	@Column(name="SubjectID")
 	private Integer subjectId;
+	@Column(name="UpFilePath")
+	private String filePath;
+	@Column(name="UploadFiles")
+	private String fileName;
+	public String getAttach() {
+		return attach;
+	}
+	public void setAttach(String attach) {
+		this.attach = attach;
+	}
+	@Column(name="attach")
+	private String attach;
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	public Integer getProviceId() {
 		return proviceId;
 	}

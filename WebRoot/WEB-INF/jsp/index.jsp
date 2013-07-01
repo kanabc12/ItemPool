@@ -203,7 +203,7 @@
                          		{header : '日期', name : 'postTime', align : 'center', width : 100}
                          ],
             onRowClick:function(rowIndex,rowData,event){
-                        window.open("http://localhost:8080/?id="+rowData.id);     
+                        window.open("fileOperate/download?articleID="+rowData.id);     
              }             
 	        });
 	}

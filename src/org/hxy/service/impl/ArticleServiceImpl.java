@@ -49,7 +49,7 @@ public class ArticleServiceImpl implements IArticleService {
 	@Override
 	public Article get(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		return articleDao.get(id);
 	}
 
 	@Override
