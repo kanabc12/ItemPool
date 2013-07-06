@@ -16,35 +16,6 @@ public class ArticleServiceImpl implements IArticleService {
 	@Autowired
 	private IArticleDao articleDao;
 	
-	@Override
-	public Article save(Article model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void saveOrUpdate(Article model) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update(Article model) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void merge(Article model) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public Article get(Integer id) {
@@ -53,9 +24,39 @@ public class ArticleServiceImpl implements IArticleService {
 	}
 
 	@Override
+	public List<Article> getArticlesByTitle(String title,int pn,int pageSize) {
+		return articleDao.getArticlesByTitle(title, pn, pageSize);
+	}
+
+	@Override
+	public List<Article> getArticles(String title, int pn, int pageSize,
+			int proviceId, int subjectId) {
+		// TODO Auto-generated method stub
+		return articleDao.getArticles(title, pn, pageSize, proviceId, subjectId);
+	}
+
+	@Override
+	public int count(String title, int proviceId, int subjectId) {
+		// TODO Auto-generated method stub
+		return articleDao.count(title, proviceId, subjectId);
+	}
+
+	@Override
+	public int countAllArticle() {
+		// TODO Auto-generated method stub
+		return articleDao.countAll();
+	}
+
+	@Override
 	public int countAll() {
 		// TODO Auto-generated method stub
-		return 0;
+		return articleDao.countAll();
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -77,15 +78,27 @@ public class ArticleServiceImpl implements IArticleService {
 	}
 
 	@Override
-	public List<Article> getArticlesByTitle(String title,int pn,int pageSize) {
-		return articleDao.getArticlesByTitle(title, pn, pageSize);
+	public void merge(Article model) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public List<Article> getArticles(String title, int pn, int pageSize,
-			int proviceId, int subjectId) {
+	public Article save(Article model) {
 		// TODO Auto-generated method stub
-		return articleDao.getArticles(title, pn, pageSize, proviceId, subjectId);
+		return null;
+	}
+
+	@Override
+	public void saveOrUpdate(Article model) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Article model) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

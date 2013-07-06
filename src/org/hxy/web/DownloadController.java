@@ -24,49 +24,76 @@ import cn.javass.commons.file.util.MiniFtp;
 public class DownloadController {
 	@Autowired
 	private MiniFtp ftpClient;
-	
+
 	@Autowired
 	private IArticleService articleService;
-	@RequestMapping(value="/download")
+
+	@RequestMapping(value = "/download")
 	public ModelAndView download(HttpServletRequest request,
-			final HttpServletResponse response,
-			@RequestParam("articleID") int artcileId) throws Exception {
+			final HttpServletResponse response, @RequestParam("articleID")
+			int artcileId) throws Exception {
 		String fileName = null;
 		Article article = articleService.get(artcileId);
-		fileName = article.getFileName();
+		String name = null;
+		String attachName = null;
+		if (article != null && article.getAttach() != null) {
+			if(article.getAttach().charAt(article.getAttach().length()-1)=='|'){
+				attachName = article.getAttach().substring(0,
+						article.getAttach().length() - 1);
+			}else{
+				attachName =  article.getAttach();
+			}
+		}
+		
+		if (article != null && article.getFileName() != null) {
+			if(article.getFileName().charAt(article.getFileName().length()-1)=='|'){
+				name = article.getFileName().substring(0,
+						article.getFileName().length() - 1);
+			}else{
+				name =  article.getFileName();
+			}
+		}
+
+		if (article.getDsk() == 0) {
+			fileName = "Web/DFiles/" + article.getFilePath();
+		} else {
+			fileName = "JtyWxDfiles2/" + article.getFilePath();
+		}
+
 		int ftpInt = ftpClient.connectServer();
-		if(ftpInt==0){
+		if (ftpInt == 0) {
 			return null;
 		}
-		int k=ftpClient.isExistFile(article.getAttach(),article.getFilePath());
-		if(k>0){
-			ftpClient.changeWorkingDirectory(article.getFilePath());
-			ftpClient.loadFile(article.getAttach(), ftpClient.getTemp()+article.getAttach());
+		int k = ftpClient.isExistFile(attachName, fileName);
+		if (k > 0) {
+			ftpClient.changeWorkingDirectory(fileName);
+			ftpClient.loadFile(attachName, ftpClient.getTemp() + attachName);
 		}
 		ftpClient.closeConnect();
-		if(k>0){
-			File file = new File(ftpClient.getTemp()+article.getAttach()); // 打开下载文件
-			byte[] buffer=new byte[1024];
-			try{
-				if(file.exists()){
-					OutputStream toClient=new BufferedOutputStream(response.getOutputStream());
-					response.setCharacterEncoding("utf-8");  
-					response.setContentType("application/octet-stream; charset=utf-8");  
-			        response.setHeader("Content-Disposition", "attachment;fileName="+new String(fileName.getBytes("gb2312"), "iso8859-1"));  
-			        long df=0;
-			        FileInputStream fis=new FileInputStream(file);
-					BufferedInputStream buff=new BufferedInputStream(fis);
-					while(df<file.length()){
-			            int j=buff.read(buffer,0,1024);
-			            df+=j;
-			            //将b中的数据写到客户端的内存
-			            toClient.write(buffer,0,j);
-			        }
-					buff.close();
+		if (k > 0) {
+			File file = new File(ftpClient.getTemp() + attachName); // 打开下载文件
+			byte[] buffer = new byte[1024];
+			try {
+				if (file.exists()) {
+					OutputStream toClient = new BufferedOutputStream(response
+							.getOutputStream());
+					response.setCharacterEncoding("utf-8");
+					response
+							.setContentType("application/octet-stream; charset=utf-8");
+					response.setHeader("Content-Disposition",
+							"attachment;fileName="
+									+ new String(name.getBytes("gb2312"), "iso8859-1"));
+					FileInputStream fis = new FileInputStream(file);
+					byte[] b = new byte[1024];
+					int length;
+					while ((length = fis.read(b)) > 0) {
+						toClient.write(b, 0, length);
+					}
+					fis.close();
 					toClient.flush();
 					toClient.close();
 				}
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

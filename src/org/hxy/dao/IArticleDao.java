@@ -14,6 +14,9 @@ public interface IArticleDao extends IBaseDao<Article, Integer> {
 	 */
 	public int countAllArticle();
 	
+	
+	public int count(String title,int proviceId,int subjectId);
+	
 	public List<Article> getArticlesByTitle(String title,int pn,int pageSize);
 	
 	public List<Article> getArticles(String title,int pn,int pageSize,int proviceId,int subjectId);

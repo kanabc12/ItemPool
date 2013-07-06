@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -13,13 +14,13 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import cn.javass.commons.mvc.util.JsonDateSerializer;
 
 @Entity
-@Table(name = "tbl_ShijuanArticle")
+@Table(name = "vi_Article")
+@IdClass(ArticleID.class)
 public class Article  implements Serializable{
 	/**
 	 * 主键
 	 */
 	@Id
-	@Column(name="ArticleID",length=19)
 	private Integer id;
 	@Column(name = "Title", length = 255)
 	private String title;
@@ -34,6 +35,14 @@ public class Article  implements Serializable{
 	private String filePath;
 	@Column(name="UploadFiles")
 	private String fileName;
+	@Column(name="dsk")
+	private int dsk;
+	public int getDsk() {
+		return dsk;
+	}
+	public void setDsk(int dsk) {
+		this.dsk = dsk;
+	}
 	public String getAttach() {
 		return attach;
 	}

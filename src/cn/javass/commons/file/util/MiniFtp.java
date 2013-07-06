@@ -9,13 +9,12 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import java.io.FileInputStream;
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.TreeSet;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.io.SocketInputStream;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 其实JDK里面也有支持FTP操作的包【jre/lib下的rt.jar】，但是SUN的DOC里面并没有提供相应文档，
@@ -36,7 +35,8 @@ public class MiniFtp {
 	private int port;
 
 	private String temp;
-
+	@Autowired
+	private FTPClient ftp;
 	public String getTemp() {
 		return temp;
 	}
@@ -44,8 +44,7 @@ public class MiniFtp {
 	public void setTemp(String temp) {
 		this.temp = temp;
 	}
-
-	private FTPClient ftpClient = new FTPClient();
+	
 
 
 
@@ -100,7 +99,7 @@ public class MiniFtp {
 		filePath=filePath.replaceAll("/","\\\\");
 		try{ 
 			filePath=new String(filePath.getBytes("GBK"),"iso-8859-1");//先转换一下
-			if(!ftpClient.changeWorkingDirectory(filePath)){ 
+			if(!ftp.changeWorkingDirectory(filePath)){ 
 				if(!filePath.equals(""))
 				{
 					String cfPath="";
@@ -108,13 +107,13 @@ public class MiniFtp {
 					for(int i=0;i<arrP.length;i++)
 					{
 						cfPath+="\\"+arrP[i];
-						if(!ftpClient.changeWorkingDirectory(cfPath)){ 
-							ftpClient.makeDirectory(cfPath); 
+						if(!ftp.changeWorkingDirectory(cfPath)){ 
+							ftp.makeDirectory(cfPath); 
 						}
 					}
 				}
 			} 
-			ftpClient.changeWorkingDirectory("\\");
+			ftp.changeWorkingDirectory("\\");
 		}catch(Exception e){ 
 			e.printStackTrace(); 
 		}
@@ -135,7 +134,7 @@ public class MiniFtp {
 		try {
 			buffIn = new BufferedInputStream(new FileInputStream(localFilePath));
 			
-			ftpClient.storeFile(newFileName, buffIn);
+			ftp.storeFile(newFileName, buffIn);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -160,7 +159,7 @@ public class MiniFtp {
 		try {
 			newFileName=new String(newFileName.getBytes("GBK"),"iso-8859-1");
 			buffIn = new BufferedInputStream(new FileInputStream(file));
-			ftpClient.storeFile(newFileName, buffIn);
+			ftp.storeFile(newFileName, buffIn);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -188,7 +187,7 @@ public class MiniFtp {
 			localFileName=new String(localFileName.getBytes("GBK"),"iso-8859-1");
 			buffOut = new BufferedOutputStream(new FileOutputStream(
 					localFileName));
-			ftpClient.retrieveFile(remoteFileName, buffOut);
+			ftp.retrieveFile(remoteFileName, buffOut);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -213,7 +212,7 @@ public class MiniFtp {
 		SocketInputStream stream=null;
 			
 			try {
-				stream=(SocketInputStream) ftpClient.retrieveFileStream(remoteFileName);
+				stream=(SocketInputStream) ftp.retrieveFileStream(remoteFileName);
 			} catch (IOException e) {
 				
 				e.printStackTrace();
@@ -227,7 +226,9 @@ public class MiniFtp {
 		int i=0;
 		try {
 			url=new String(url.getBytes("GBK"),"iso-8859-1");
-			String[] strs=ftpClient.listNames(fileName);
+			ftp.enterLocalPassiveMode();  
+			boolean j=ftp.changeWorkingDirectory(url);
+			String[] strs=ftp.listNames(fileName);
 			if(strs!=null && strs.length>0)
 			i=1;
 		} catch (IOException e) {
@@ -246,7 +247,7 @@ public class MiniFtp {
 
 	public void listRemoteFiles(String regStr) {
 		try {
-			FTPFile[] files = ftpClient.listFiles(regStr);
+			FTPFile[] files = ftp.listFiles(regStr);
 			// System.out.println("系统名称:"+ftpClient.getSystemName());
 			// System.out.println(files.length);
 			if (files == null || files.length == 0){}
@@ -294,8 +295,8 @@ public class MiniFtp {
 	public void closeConnect() {
 		try {
 
-			ftpClient.logout();
-			ftpClient.disconnect();
+			ftp.logout();
+			ftp.disconnect();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -309,7 +310,7 @@ public class MiniFtp {
 	 */
 	public void setFileType(int fileType) {
 		try {
-			ftpClient.setFileType(fileType);
+			ftp.setFileType(fileType);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -322,7 +323,7 @@ public class MiniFtp {
 	 */
 	protected FTPClient getFtpClient() {
 
-		return ftpClient;
+		return ftp;
 	}
 
 	/**
@@ -347,16 +348,16 @@ public class MiniFtp {
 		int i=0;
 		try {
 //			setArg(configFile);
-			ftpClient.setDefaultPort(port);
-			ftpClient.configure(getFtpConfig());
-			ftpClient.connect(ip);
-			ftpClient.login(username, password);
-			ftpClient.setDefaultPort(port);
-			ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-			reply = ftpClient.getReplyCode();
+			ftp.setDefaultPort(port);
+			ftp.configure(getFtpConfig());
+			ftp.connect(ip);
+			ftp.login(username, password);
+			ftp.setDefaultPort(port);
+			ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+			reply = ftp.getReplyCode();
 			
 			if (!FTPReply.isPositiveCompletion(reply)) {
-				ftpClient.disconnect();
+				ftp.disconnect();
 				//System.err.println("FTP server refused connection.");
 			}else{
 				i=1;
@@ -388,7 +389,7 @@ public class MiniFtp {
 	public void changeToParentDirectory() {
 		try {
 
-			ftpClient.changeToParentDirectory();
+			ftp.changeToParentDirectory();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
@@ -400,7 +401,7 @@ public class MiniFtp {
 	public void deleteFile(String filename) {
 		try {
 
-			ftpClient.deleteFile(filename);
+			ftp.deleteFile(filename);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
@@ -417,7 +418,7 @@ public class MiniFtp {
 	public void renameFile(String oldFileName, String newFileName) {
 		try {
 			connectServer();
-			ftpClient.rename(oldFileName, newFileName);
+			ftp.rename(oldFileName, newFileName);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}

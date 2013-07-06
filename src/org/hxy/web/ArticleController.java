@@ -26,7 +26,7 @@ public class ArticleController {
 			@RequestParam(value = "limit", defaultValue = "10") int pageSize,
 			@RequestParam(value = "dq", defaultValue = "0") int dq,
 			@RequestParam(value = "xk", defaultValue = "0") int xk) {
-		int count = articleService.getArticles(title, -1, -1, dq, xk).size();
+		int count = articleService.count(title, dq, xk);
 		pn = pn / 10 == 0 ? 1 : pn / 10 + 1;
 		List<Article> result = articleService.getArticles(title, pn, pageSize,
 				dq, xk);

@@ -192,19 +192,17 @@
             		var n1 = new Date().getTime();
             		var n2 = new Date(rowData.postTime).getTime();
             		if(((n1-n2)/(24*60*60*1000))<=10){
-                		return '<span style="cursor:pointer">'+colValue + '</span><img src="${ctx}/images/new.gif" />';
+                		return '<a href="fileOperate/download?articleID='+rowData.id+'" target="_blank">'+colValue + '</a><img src="${ctx}/images/new.gif" />';
             		}else{
-            			return  '<span style="cursor:pointer">'+colValue+ '</span>';
+            			return  '<a href="fileOperate/download?articleID='+rowData.id+'" target="_blank">'+colValue+ '</a>';
             		}
             	}else{
-            		return '<span style="cursor:pointer">'+colValue+ '</span>';
+            		return '<a href="fileOperate/download?articleID='+rowData.id+'" target="_blank">'+colValue+ '</a>';
             	}
             }}, 
                          		{header : '日期', name : 'postTime', align : 'center', width : 100}
-                         ],
-            onRowClick:function(rowIndex,rowData,event){
-                        window.open("fileOperate/download?articleID="+rowData.id);     
-             }             
+                         ]     
+                          
 	        });
 	}
 	
@@ -528,6 +526,17 @@
 		<div id="logo1">
 			<img src="${ctx}/images/czbf.jpg" border="0">
 		</div>
+<div class="nav"></div>
+		<div id="logo1">
+			
+ <p align="center">技术支持：思派讯网络科技有限公司 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;思派讯版权所有 &copy;2013-2018 All Right Reserved.
+  &nbsp;
+          </p>
+          <p align="center">经营许可证编号：赣B2-20130026号    
+          &nbsp;&nbsp;&nbsp;&nbsp; 赣ICP备13003175号
+          </p>
+		</div>
 	</div>
+
 </body>
 </html>
