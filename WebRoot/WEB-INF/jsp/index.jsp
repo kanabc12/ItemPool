@@ -104,6 +104,13 @@
             lazyLoad : true,
             scrollable: true
         });
+        $('#make-articleTab').omTabs({
+            width: 'fit',
+            height: '330px',
+            closable : false,
+            lazyLoad : true,
+            scrollable: true
+        });
 	    $('#combo1').omCombo({
 	    	value:'',
 	    	emptyText:'请选择-----',
@@ -249,7 +256,7 @@
                         	 return '<a href="javascript:void(0);" style="text-decoration: none;" onClick="showRowdata1('+rowIndex+',event)">详情</a> &nbsp;<a href="javascript:void(0);" style="text-decoration: none;" onClick="errorCorrect('+rowIndex+',event,1)">纠错</a>';
                          }} ]
 	    });
-		$("#know").val("");
+		//$("#know").val("");
 	}
 	
 	 function showRowdata1(index, e){
@@ -300,8 +307,7 @@
 				<li class="sp"><a href="javascript:void(0);"
 					onClick="this.style.behavior='url(#default#homepage)';this.setHomePage('http://localhost:8080/ItemPool/index.html');">设为主页</a>
 				</li>
-				<li><a
-					href="#>网站导航</a>
+				<li><a href="#">网站导航</a>
 					</li>
 					<li><a href="#">联系我们</a>
 					</li>
@@ -345,7 +351,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="knowGrid"></div>
+		<table id="knowGrid"></table>
 		<div class="nav"></div>
 		<div id="sliderDemo">
 			<div id="slider" class="slider-demo">
@@ -450,7 +456,7 @@
 		<div id="main">
 			<div class="guang">
 				<div class="tit">
-					<h3>根据试题找答案</h3>
+					<h3>根据题文找答案</h3>
 				</div>
 				<div id="answerDiv">
 					<div id="leftMargin"></div>
@@ -470,19 +476,30 @@
 				</div>
 			</div>
 			<table id="reserchResult"></table>
-			<div class="nav"></div>
-			<div id="logo1">
-				<a href="http://sj.jtywx.com/sj/cxh.aspx" target="_blank"><img
-					src="${ctx}/images/tmxsj.jpg" border="0" alt="中国教育部"> </a>
-			</div>
-			<div class="nav"></div>
-						<div class="guang">
+	<div class="nav"></div>
+			<div id="tabs">
 				<div class="tit">
-					<h3>根据标题找文章</h3>
+					<h3>各学科最新试题</h3>
 				</div>
-				<div id="answerDiv">
-					<div id="leftMargin"></div>
-					<div id="answerSerach">
+				<div id="make-tab">
+					<ul>
+						<c:forEach items="${disciplines}" var="discipline">
+							<li><a href="question/get20thQuestions/${discipline.id}">${discipline.name}</a>
+							</li>
+						</c:forEach>
+					</ul>
+				</div>
+			</div>
+			
+			
+			<div class="nav"></div>
+			<div class="guang">
+				<div class="tit">
+					<h3>根据标题找试卷</h3>
+				</div>
+				<div id="paperDiv">
+					<div id="leftMargin2"></div>
+					<div id="answerSerach2">
 						<table>
 							<tr>
 								<td>地区：</td>
@@ -498,37 +515,34 @@
 						</table>
 					</div>
 				</div>
+				
 			</div>
 			<table id="articleResult"></table>
 			<div class="nav"></div>
-			<div id="tabs">
+			<div id="tabs1">
 				<div class="tit">
-					<h3>各学科最新试题</h3>
+					<h3>各学科最新试卷</h3>
 				</div>
-				<div id="make-tab">
+				<div id="make-articleTab">
 					<ul>
 						<c:forEach items="${disciplines}" var="discipline">
-							<li><a href="question/get20thQuestions/${discipline.id}">${discipline.name}</a>
+							<li><a href="article/get20thArticles/${discipline.id}">${discipline.name}</a>
 							</li>
 						</c:forEach>
 					</ul>
 				</div>
-			</div>
-		</div>
-		<div class="nav"></div>
-		<div id="logo2">
-			<img src="${ctx}/images/zsj.jpg" border="0" alt="中国教育部"> <a
-				href="http://sj.jtywx.com/sj/cxh.aspx" target="_blank"> <img
+				</div>
+				 <a
+				href="http://221.122.71.45:8099/mxsj/mxsj.aspx" target="_blank"> <img
 				src="${ctx}/images/tmxsj.jpg" border="0">
 			</a>
-		</div>
+		
+		</div>	
+		<div id="logo1">
 		<div class="nav"></div>
 		<div id="logo1">
 			<img src="${ctx}/images/czbf.jpg" border="0">
-		</div>
-<div class="nav"></div>
-		<div id="logo1">
-			
+		</div>	
  <p align="center">技术支持：思派讯网络科技有限公司 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;思派讯版权所有 &copy;2013-2018 All Right Reserved.
   &nbsp;
           </p>

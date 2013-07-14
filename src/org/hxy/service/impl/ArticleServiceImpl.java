@@ -101,4 +101,10 @@ public class ArticleServiceImpl implements IArticleService {
 		
 	}
 
+	@Override
+	public List<Article> getArticleBySubject(int subjectID, int pn, int pageSize) {
+		// TODO Auto-generated method stub
+		return articleDao.getArticleBySubject(subjectID, pn, pageSize);
+	}
+
 }

@@ -1,5 +1,6 @@
 package cn.javass.commons.file.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,6 +10,8 @@ import java.io.OutputStream;
 import java.net.SocketException;
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPClientConfig;
+import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +27,8 @@ public class FTPClientTemplate {
 	// Instance data
 	// ---------------------------------------------------------------------
 	/** logger */
-	protected final Logger log = LoggerFactory.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger("itempool-access");
+	protected final Logger error = LoggerFactory.getLogger("itempool-error");
 	private ThreadLocal<FTPClient> ftpClientThreadLocal = new ThreadLocal<FTPClient>();
 
 	private String host;
@@ -32,9 +36,10 @@ public class FTPClientTemplate {
 	private String username;
 	private String password;
 
+	private String temp;
 	private boolean binaryTransfer = true;
 	private boolean passiveMode = true;
-	private String encoding = "UTF-8";
+	private String encoding = "GBK";
 	private int clientTimeout = 1000 * 30;
 
 	public String getHost() {
@@ -383,7 +388,6 @@ public class FTPClientTemplate {
 			boolean autoClose) throws FTPClientException {
 		try {
 			FTPClient ftpClient = getFTPClient();
-			// 处理传输
 			return ftpClient.retrieveFile(remoteAbsoluteFile, output);
 		} catch (IOException e) {
 			throw new FTPClientException("Couldn't get file from server.", e);
@@ -506,22 +510,31 @@ public class FTPClientTemplate {
 		}
 	}
 
-	public static void main(String[] args) throws FTPClientException,
+	public static void main(String[] args) throws Exception,
 			InterruptedException {
 		FTPClientTemplate ftp = new FTPClientTemplate();
-		ftp.setHost("localhost");
-		ftp.setPort(2121);
-		ftp.setUsername("admin");
-		ftp.setPassword("admin");
-		ftp.setBinaryTransfer(false);
-		ftp.setPassiveMode(false);
-		ftp.setEncoding("utf-8");
-
+		ftp.setHost("221.122.71.11");
+		ftp.setPort(22);
+		ftp.setUsername("jty");
+		ftp.setPassword("jtyftp");
+		ftp.setBinaryTransfer(true);
+		ftp.setPassiveMode(true);
+		ftp.setEncoding("GBK");
+		FTPClient client =ftp.getFTPClient();
+		client.changeWorkingDirectory("JtyWxDfiles2/taojuanfiles/2013/06/");
+		FTPFile[] files = client.listFiles("董云飞_20130629093211.doc");
+		
+		for(FTPFile file:files){
+			System.out.println(file.getName());
+		}
 		// boolean ret =
 		// ftp.put("/group/tbdev/query/user-upload/12345678910.txt",
 		// "D:/099_temp/query/12345.txt");
 		// System.out.println(ret);
-		ftp.mkdir("asd", "user-upload");
+		File file = new File(new String("c:\\temp\\董云飞_20130629093211.doc".getBytes("GBK"),"ISO-8859-1"));
+		OutputStream output = new FileOutputStream(file);
+//		System.out.println(ftp.get("JtyWxDfiles2/taojuanfiles/2013/06/董云飞_20130629093211.doc", output));
+		client.retrieveFile("董云飞_20130629093211.doc", output);
 
 		// ftp.disconnect();
 		// ftp.mkdir("user-upload1");
@@ -530,5 +543,13 @@ public class FTPClientTemplate {
 		// String[] aa = {"/group/tbdev/query/user-upload/123.txt",
 		// "/group/tbdev/query/user-upload/SMTrace.txt"};
 		// ftp.delete(aa);
+	}
+
+	public String getTemp() {
+		return temp;
+	}
+
+	public void setTemp(String temp) {
+		this.temp = temp;
 	}
 }

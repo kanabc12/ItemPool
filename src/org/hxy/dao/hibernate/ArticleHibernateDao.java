@@ -33,7 +33,7 @@ public class ArticleHibernateDao extends BaseHibernateDao<Article, Integer>
 		List<Article> result = null;
 		List<Object> paramlist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer();
-		sb.append("from Article where 1=1 ");
+		sb.append("from Article where 1=1 and skinId =1 and passed=2");
 		if (!"".equals(title) && title != null) {
 			sb.append(" and title like ?");
 			paramlist.add("%" + title + "%");
@@ -62,7 +62,7 @@ public class ArticleHibernateDao extends BaseHibernateDao<Article, Integer>
 	public int count(String title, int proviceId, int subjectId) {
 		List<Object> paramlist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer(
-				"select count(*) from Article where attach is not null");
+				"select count(*) from Article where attach is not null and skinId =1 and passed=2");
 		if (!"".equals(title) && title != null) {
 			sb.append(" and title like ?");
 			paramlist.add("%" + title + "%");
@@ -77,6 +77,16 @@ public class ArticleHibernateDao extends BaseHibernateDao<Article, Integer>
 		}
 		Number count = unique(sb.toString(), paramlist.toArray());
 		return count.intValue();
+	}
+
+	@Override
+	public List<Article> getArticleBySubject(int subjectID, int pn, int pageSize) {
+		List<Article> result = null;
+		String hql = "from Article where subjectId = ? and skinId =1 and passed=2 and attach is not null order by postTime desc";
+		List<Object> paramlist = new ArrayList<Object>();
+		paramlist.add(new Integer(subjectID));
+		result =  list(hql,pn,pageSize,paramlist.toArray());
+		return result;
 	}
 
 }

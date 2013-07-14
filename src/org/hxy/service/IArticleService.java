@@ -21,5 +21,7 @@ public interface IArticleService extends IBaseService<Article, Integer> {
 	
 	
 	public int count(String title,int proviceId,int subjectId);
+	
+	public List<Article> getArticleBySubject(int subjectID,int pn,int pageSize);
 
 }

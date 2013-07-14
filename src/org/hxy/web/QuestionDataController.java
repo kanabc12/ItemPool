@@ -12,7 +12,6 @@ import org.hxy.dao.IQuestionXMLData06Dao;
 import org.hxy.dao.IQuestionXMLData07Dao;
 import org.hxy.dao.IQuestionXMLData08Dao;
 import org.hxy.dao.IQuestionXMLData09Dao;
-import org.hxy.model.Discipline;
 import org.hxy.model.Question;
 import org.hxy.model.QuestionXMLData;
 import org.hxy.model.QuestionXMLData01;
@@ -38,7 +37,6 @@ import org.springframework.web.servlet.ModelAndView;
 import cn.javass.commons.Constants;
 import cn.javass.commons.date.util.DateUtil;
 import cn.javass.commons.file.util.FileManager;
-import cn.javass.commons.file.util.FileOperateUtils;
 import cn.javass.commons.file.util.QuestionCopy;
 
 @Controller

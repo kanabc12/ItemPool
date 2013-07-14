@@ -37,6 +37,10 @@ public class Article  implements Serializable{
 	private String fileName;
 	@Column(name="dsk")
 	private int dsk;
+	@Column(name="skinId")
+	private int skinId;
+	@Column(name="passed")
+	private int passed;
 	public int getDsk() {
 		return dsk;
 	}
@@ -105,5 +109,17 @@ public class Article  implements Serializable{
 		if (id != other.id)
 			return false;
 		return true;
+	}
+	public int getSkinId() {
+		return skinId;
+	}
+	public void setSkinId(int skinId) {
+		this.skinId = skinId;
+	}
+	public int getPassed() {
+		return passed;
+	}
+	public void setPassed(int passed) {
+		this.passed = passed;
 	}
 }
